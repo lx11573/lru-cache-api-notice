@@ -1,0 +1,38 @@
+{
+  "name": "lru-cache-api-notice",
+  "version": "0.0.1",
+  "description": "lruCache 缓存功能，重复 api 通知功能",
+  "author": "lyu",
+  "type": "module",
+  "files": [
+    "dist",
+    "README"
+  ],
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "typings": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lx11573/lru-cache-api-notice"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4",
+    "vite": "^3.0.5",
+    "vite-plugin-dts": "^1.4.1"
+  },
+  "keywords": [
+    "lru",
+    "cache",
+    "vue3"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@types/md5": "^2.3.2",
+    "md5": "^2.3.0"
+  }
+}

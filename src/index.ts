@@ -21,7 +21,7 @@ interface LruCacheData<T> {
   data: T;
   storeTime: number;
 }
-
+/** 默认使用 sessionStorage */
 const storage = window.sessionStorage;
 
 function getHashKey(key: string): string {
@@ -173,7 +173,6 @@ export class LruCache {
         const [resolve, reject] = curSubscribe.value;
         success ? resolve(data as T) : reject();
         curSubscribe = values.next();
-        console.log('触发通知 => ', data);
       }
 
       this.subscribes.delete(hashKey);
@@ -202,7 +201,7 @@ export class LruCache {
     }
   }
 }
-
+/** 单例模式 */
 function create(): (options?: LruCacheOptions) => LruCache {
   let lruCache: LruCache;
   return (options?: LruCacheOptions): LruCache => {

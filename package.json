@@ -1,6 +1,6 @@
 {
   "name": "lru-cache-api-notice",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "lruCache 缓存功能，重复 api 通知功能",
   "author": "lyu",
   "type": "module",

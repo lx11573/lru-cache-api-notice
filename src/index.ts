@@ -24,9 +24,6 @@ interface LruCacheData<T> {
 /** 默认使用 sessionStorage */
 const storage = window.sessionStorage;
 
-function getHashKey(key: string): string {
-  return md5(key);
-}
 export class LruCache {
   private maxCache: number;
 
@@ -63,14 +60,14 @@ export class LruCache {
   }
 
   has(key: string): boolean {
-    const hashKey = getHashKey(key);
+    const hashKey = this.getHashKey(key);
     return this.requestCache.has(hashKey);
   }
 
   get<T = any>(key: string): Promise<T> | null {
     if (this.blackList.includes(key)) return null;
 
-    const hashKey = getHashKey(key);
+    const hashKey = this.getHashKey(key);
 
     if (!this.requestCache.has(hashKey) || this.isExpired<T>(hashKey)) {
       if (this.useNotice) {
@@ -89,7 +86,7 @@ export class LruCache {
   set<T>(key: string, value: any) {
     if (this.blackList.includes(key)) return;
 
-    const hashKey = getHashKey(key);
+    const hashKey = this.getHashKey(key);
 
     if (this.requestCache.has(hashKey)) {
       this.requestCache.delete(hashKey);
@@ -109,7 +106,7 @@ export class LruCache {
   }
 
   delete(key: string) {
-    const hashKey = getHashKey(key);
+    const hashKey = this.getHashKey(key);
     this.requestCache.delete(hashKey);
     this.storage && storage.removeItem(hashKey);
   }
@@ -118,7 +115,9 @@ export class LruCache {
     this.requestCache.clear();
     this.storage && storage.clear();
   }
-
+  getHashKey(key: string): string {
+    return md5(key);
+  }
   getBlackList() {
     return this.blackList;
   }
@@ -157,12 +156,12 @@ export class LruCache {
   }
 
   private addNotice(key: string) {
-    const hashKey = getHashKey(key);
+    const hashKey = this.getHashKey(key);
     this.subscribes.set(hashKey, []);
   }
 
   private notice<T>(key: string, data: any, success = true) {
-    const hashKey = getHashKey(key);
+    const hashKey = this.getHashKey(key);
     const subscribes = this.subscribes.get(hashKey);
 
     if (subscribes) {
@@ -180,12 +179,12 @@ export class LruCache {
   }
 
   private hasNotice(key: string): boolean {
-    const hashKey = getHashKey(key);
+    const hashKey = this.getHashKey(key);
     return this.subscribes.has(hashKey);
   }
 
   private addSubscribe<T>(key: string): Promise<T> {
-    const hashKey = getHashKey(key);
+    const hashKey = this.getHashKey(key);
     return new Promise((resolve, reject) => {
       const curSubscribe = this.subscribes.get(hashKey)!;
       curSubscribe.push([resolve, reject]);
@@ -194,7 +193,7 @@ export class LruCache {
   }
 
   noticeReject(key: string) {
-    const hashKey = getHashKey(key);
+    const hashKey = this.getHashKey(key);
 
     if (this.subscribes.has(hashKey)) {
       this.notice(key, null, false);

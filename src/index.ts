@@ -10,7 +10,7 @@ import md5 from 'md5';
  * @param {Array} blackList 禁用缓存名称
  * @param {Boolean} useNotice 启用 api 通知功能
  */
-interface LruCacheOptions {
+export interface LruCacheOptions {
   maxCache?: number;
   cacheTime?: number;
   storage?: boolean;
